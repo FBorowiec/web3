@@ -1,0 +1,13 @@
+{
+    "devDependencies": {
+        "@bazel/bazel": "^0.19.1",
+        "@bazel/typescript": "0.21.0",
+        "typescript": "^3.1.6"
+    },
+    "license": "MIT",
+    "name": "web3",
+    "scripts": {
+        "build": "bazel build :bundle",
+        "watch": "ibazel build :app"
+    }
+}
