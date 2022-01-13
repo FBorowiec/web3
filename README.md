@@ -102,6 +102,15 @@ Now compile: `npx hardhat compile`
 
 THIS WILL FAIL! Need to bump the hardhat version to `8.10`.
 
+Now let's analyze what has been created: `less contracts/HelloWorld.sol/HelloWorld.json | jq`
+
+You can see:
+* the deployed bytecode
+* the bytecode
+* what functions exist on there (in this case there is one called `hello` returning a `string`
+
+This is all the code that's needed in order to deploy it (note the code is inside in bytecode understood by the EVM - Ethereum Virtual Machine).
+
 # Now what? Let's test
 
 ## Install deps (a lot)
@@ -119,3 +128,28 @@ Rename `hardhat.config.js` to Typescript (`.ts`) and add `import "@nomiclabs/har
 ## Let's write a test!
 
 Pay attention to the folder style convention!
+
+```typescript
+import "@nomiclabs/hardhat-ethers"; // Uses the hardhat-ethers plugin to use Ethers
+import { ethers } from "hardhat";
+import { expect } from "chai";
+
+describe("hello-world", function () {
+  it("should say hi", async function () {
+      // 1. setup environment <- imports
+      // 2. deploy contract
+      // 3. call our functions to test
+
+      // 2 what happens here is that hardhat has compiled your contract:
+      // you can check it by running: `less contracts/HelloWorld.sol/HelloWorld.json | jq`
+      const HelloWorld = await ethers.getContractFactory("HelloWorld");
+      // This makes a transaction that deploys the contract on the ethereum network
+      const hello = await HelloWorld.deploy();
+      await hello.deployed(); // this waits until the transaction is mined (contract confirmed by the network enough times)
+
+      expect(await hello.hello()).to.equal("Hello, World");
+  });
+});
+```
+
+And run them: `npx hardhat test`
