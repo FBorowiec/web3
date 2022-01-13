@@ -1,4 +1,5 @@
-// MIT
+// SPDX-License-Identifier: MIT
+import "@nomiclabs/hardhat-waffle"
 pragma solidity ^0.8.0;
 
 contract HelloWorld {
