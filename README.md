@@ -333,3 +333,42 @@ You also need a `tsconfig.json`:
 # Let's create the files inside src
 
 And run a server on port `6969` using: `python3 -m http.server 6969` inside the `dist` folder.
+
+Now go to your `localhost:6969` (with `webpack`, `node`, and the python server running).
+
+---
+
+# Terminology
+
+Web3: In general means blockchain tech with some purpose
+
+Ethereum: The blockchain we will we be developing with
+
+Provider: From Ethers docs:
+
+"A Provider abstracts a connection to the Ethereum blockchain, for issuing queries and sending state changing transactions."
+
+Contract: This is code written in Solidity that has been compiled and deployed onto a network. It has an address that is no different than a wallet address.
+
+Wallet: The blockchain, its a private + public key combo (really you just need a private key).
+
+* ethers: `import { ethers } from "ethers";`. This is lib that abstracts the complication of communication.
+* `hardhat`: Its backbone of any project these days. It provides compiling, testing, and deployment support.
+* When you get a `getContractFactory("HelloWorld")` it actually just loads the file from the json build file.
+* `metamask`: Its a browser plugin for wallets. "The Defacto Standard"
+
+You will notice that in the code on the web I don't reference hardhat. That is because hardhat is a support lib.
+
+---
+
+# In a nutshell
+
+1. We write a contract in `solidity`.
+2. HardHat uses that contract to create a `json` file with the bytecode of the contract.
+3. HardHat also uses a deploy script to deploy the contract to the chosen network.
+4. Using `metamask` we connect to the network.
+5. Using a browser we display the results.
+
+---
+
+
