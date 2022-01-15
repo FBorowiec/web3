@@ -158,6 +158,8 @@ And run them: `npx hardhat test`
 
 # Deployment script
 
+Let's create a deploy script that can actually deploy this contract into a network.
+
 ```typescript
 import "@nomiclabs/hardhat-ethers";
 import { ethers } from "hardhat";
@@ -258,8 +260,42 @@ WARNING: These accounts, and their private keys, are publicly known.
 Any funds sent to them on Mainnet or any other live network WILL BE LOST.
 ```
 
+Leave it running!
+
 Let's redeploy now.
 `npx hardhat run scripts/deploy-hello.ts --network localhost`
+
+Go back to your network to analyze the transaction that just occured:
+
+```bash
+eth_blockNumber
+web3_clientVersion (2)
+eth_chainId
+eth_accounts
+eth_blockNumber
+eth_chainId (2)
+eth_estimateGas
+eth_getBlockByNumber
+eth_feeHistory
+eth_sendTransaction  # A TRANSACTION JUST OCCURED!
+  Contract deployment: helloWorld  # IT DEPLOYS A CONTRACT CALLED helloWorld
+  Contract address:    0x5fbdb2315678afecb367f032d93f642f64180aa3  # THIS IS THE CONTRACT'S ID
+  Transaction:         0x6d7a8f9e70565909329f2ae4c051d908df8ec14081469bf3a18c577d2a5b1824  # TRANSACTION ID
+  From:                0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266  # ADDRESS OF THE WALLET PAYING FOR THE TRANSACTION (in this case account 0)
+  Value:               0 ETH
+  Gas used:            135067 of 135067
+  Block #1:            0x1738f8d35cfa3c0f1cb59ed27f730d472c5b0c0f5d55c8033880942b8f9a4e84
+
+eth_chainId
+eth_getTransactionByHash
+eth_chainId
+eth_getTransactionReceipt
+eth_chainId
+eth_call  # THE SECOND THING IS AN eth_call WITH NO GAS USED
+  Contract call:       helloWorld#hello
+  From:                0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266  # IT JUST CALLS hello FROM account 0 TO THE CONTRACT (check the contract id above)
+  To:                  0x5fbdb2315678afecb367f032d93f642f64180aa3
+```
 
 ---
 
@@ -271,3 +307,29 @@ Let's redeploy now.
 4. Copy the private key
 5. Import an account on MetaMask (click on your account's circular icon)
 6. Select the localhost network (you need to show test networks in settings)
+
+---
+
+# Webpack config
+
+Inside the `webpack.config.js` there are two entry points: `./src/index.html` and `./src/index.ts`.
+
+Dependencies: `yarn add -D webpack webpack-cli ts-loader html-webpack-plugin dotenv`
+
+You also need a `tsconfig.json`:
+
+```bash
+{
+    "compilerOptions": {
+        "esModuleInterop": true,
+        "resolveJsonModule": true,
+        "target": "es5"
+    }
+}
+```
+
+---
+
+# Let's create the files inside src
+
+And run a server on port `6969` using: `python3 -m http.server 6969` inside the `dist` folder.
