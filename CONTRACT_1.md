@@ -15,9 +15,6 @@ styles:
 
 # A tour of Web 3: Ethereum and Smart Contracts
 
-[first-contract](theprimeagen.github.io/nft/your-first-contract)
-https://blog.mgechev.com/2018/11/19/introduction-bazel-typescript-tutorial/
-
 1. The foundation
     * building a `HelloWorld` contract.
     * testing it
