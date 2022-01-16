@@ -370,5 +370,3 @@ You will notice that in the code on the web I don't reference hardhat. That is b
 5. Using a browser we display the results.
 
 ---
-
-

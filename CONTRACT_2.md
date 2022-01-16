@@ -195,3 +195,95 @@ After deploying it once again the output should be: `Counter BigNumber: { value:
 Note: `BigNumber` because javascript can't display solidity's uint256.
 
 You can avoid that by casting to a `uint32` inside the contract (be careful with overflows).
+
+---
+
+# Environment variables
+
+Go back to the contract and remove the hardcoded wallet value and change it to `process.env.CONTRACT_ADDRESS` that you will specify in a `.env` file inside your root.
+
+The contract address is the last `To` address of the counter contract.
+
+Let's also modify inside the `index.ts` the functions list to add the counter's contract functions.
+
+```typescript
+import { ethers } from "ethers";
+
+function getEth() {
+    // @ts-ignore
+    const eth = window.ethereum;
+    if (!eth) {
+        throw new Error("No Ethereum provider found");
+    }
+    return eth;
+}
+
+async function hasAccounts() {
+    const eth = getEth();
+    const accounts = await eth.request({ method: "eth_accounts" }) as string[];
+
+    return accounts && accounts.length > 0 ? accounts : null;
+}
+
+async function requestAccounts() {
+    const eth = getEth();
+    const accounts = await eth.request({ method: "eth_requestAccounts" }) as string[];
+
+    return accounts && accounts.length > 0 ? accounts : null;
+}
+
+async function run() {
+    if (!await hasAccounts() && !await requestAccounts()) {
+        throw new Error("No accounts found");
+    }
+
+    const counter = new ethers.Contract(
+        process.env.CONTRACT_ADDRESS,
+        [
+            "function count() public",
+            "function getCounter() public view returns (uint32)",
+        ],
+        new ethers.providers.Web3Provider(getEth()),
+    )
+
+    const el = document.createElement("div");
+    async function setCounter() {
+        el.innerHTML = await counter.getCounter();
+    }
+    setCounter();
+
+    const button = document.createElement("button");
+    button.innerText = "increment";
+    button.onclick = async function() {
+        setCounter();
+    }
+
+    document.body.appendChild(el);
+    document.body.appendChild(button);
+}
+
+run();
+```
+
+And rerun `webpack` before deploying. DEPLOYING WILL FAIL!
+
+---
+
+# How to deploy
+
+Several things need to happen:
+
+* Add a new network to `hardhat.config.ts`:
+
+```typescript
+  networks : {
+    hardhat : {
+      chainId : 1337,
+    }
+  }
+```
+* Restart the node
+* Redeploy using the deployment script
+* Take the new address of the `To` from the `eth_call`
+* Substitute it in the `.env`
+* Restart webpack

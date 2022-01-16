@@ -6,4 +6,9 @@ import "@nomiclabs/hardhat-waffle"; // Uses the hardhat-waffle plugin to test Et
  */
 module.exports = {
   solidity : "0.8.10",
+  networks : {
+    hardhat : {
+      chainId : 1337,
+    }
+  }
 };
