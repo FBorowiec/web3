@@ -92,3 +92,29 @@ Three Foundational Materials required for basic Diamond Understanding
 * Storage / Layout
 
 You can understand the diamond pattern, but probably not create it easily.
+
+---
+
+# Deploy new contract
+
+While having a `npx hardhat node` running:
+
+`npx hardhat run scripts/deploy-fallback.ts --network localhost`
+
+Output:
+
+```bash
+Fallback address: 0x5FbDB2315678afecb367f032d93F642f64180aa3
+(node:393755) UnhandledPromiseRejectionWarning: ProviderError: Error: VM Exception while processing transaction: reverted with reason string 'You shouldn't be here'
+    at HttpProvider.request (/home/fra/dev/web3/node_modules/hardhat/src/internal/core/providers/http.ts:49:19)
+    at GanacheGasMultiplierProvider.request (/home/fra/dev/web3/node_modules/hardhat/src/internal/core/providers/gas-providers.ts:312:34)
+    at processTicksAndRejections (internal/process/task_queues.js:95:5)
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:393755) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .c
+ise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 1)
+(node:393755) [DEP0018] DeprecationWarning: Unhandled promise rejections are deprecated. In the future, promise rejections that are not handled will terminate the Node.js process with a non-zero exit code.
+```
+
+You shouldn't be here!
+
+---
