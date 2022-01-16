@@ -188,7 +188,7 @@ OUTPUT:
 
 ```bash
 $ npx hardhat node
-Started HTTP and WebSocket JSON-RPC server at http://127.0.0.1:8545/
+Started HTTP and WebSocket JSON-RPC server at http://127.0.0.1:6969/
 
 Accounts
 ========

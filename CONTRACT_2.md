@@ -282,8 +282,45 @@ Several things need to happen:
     }
   }
 ```
+
+* Have python running a server from the `dist` folder on port `6969`
 * Restart the node
 * Redeploy using the deployment script
 * Take the new address of the `To` from the `eth_call`
 * Substitute it in the `.env`
 * Restart webpack
+* Go to `localhost:6969`
+* Connect to MetaMask with the test account / Reset your account
+* Increment the counter
+* Add the new address (`Counter contract`) - Notice same address as in `.env`
+* Pay for the transaction
+
+---
+
+# How to deploy to a real network
+
+* Create a Rinkeby network: [faucets.chain.link/rinkeby](https://faucets.chain.link/rinkeby)
+* Deploy the Rinkeby network on `alchemyapi`.
+* Add the new netowrk to `hardhat.config.ts`:
+
+```typescript
+    rinkeby: {
+        url: `https://eth-rinkeby.alchemyapi.io/v2/${process.env.ALCHEMY_API_KEY}`,
+        accounts: [`${process.env.RINKEBY_KEY}`],
+    }
+```
+
+* Add a console log of the address in the deploy function of the deployment script(in order to know to the `scripts/deploy-counter.ts`:
+
+```typescript
+    await counter.deployed();
+
+    console.log("Counter address:", counter.address);
+
+    return counter;
+```
+
+* Deploy it using the network's name: `npx hardhat run scripts/deploy-counter.ts --network rinkeby`
+* Use the new address to subsittute it inside the `.env`.
+* Restart `npx webpack`
+* Change the network on MetaMask to the new Rinkeby network.
